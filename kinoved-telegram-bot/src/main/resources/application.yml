@@ -1,0 +1,22 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: kinoved-telegram-bot
+
+telegram:
+  bot:
+    token: asdf
+    username: asdf
+    creatorId: asdf
+
+kinoved-core:
+  api:
+    url: http://localhost:8080
+
+app:
+  settings:
+    callback-data-separator: ":::"
+    caption-symbols-limit: 1024
+    max-displayed-persons-per-profession: 5
