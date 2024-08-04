@@ -104,44 +104,4 @@ public class FileTaskHandlerImpl implements FileTaskHandler {
                         + ex.getMessage());
     }
 
-
-//    @Override
-//    public void moveFileToGenreDirectory(MovieFileMoveTask movieFileMoveTask) {
-//        String fileName = movieFileMoveTask.getFileName();
-//        String targetFolderName = movieFileMoveTask.getGenre().isBlank()
-//                ? appSettings.getUndefinedGenreFolder()
-//                : movieFileMoveTask.getGenre();
-//
-//        File targetFolder;
-//        try {
-//            targetFolder = fileSystemUtility.getTargetFolder(appSettings.getTargetDirectory(), targetFolderName);
-//        } catch (IOException e) {
-//            LOG.error("Не удалось создать папку для жанра {}", targetFolderName, e);
-//            MovieFileMoveResult movieFileMoveResult = taskResultFabric.create(movieFileMoveTask, false,
-//                    "Не удалось создать папку для жанра\n" + e.getMessage());
-//            NotifyKafkaMessage notifyMessage = notifyKafkaMessageFabric.createMessage(movieFileMoveResult);
-//            messageSender.send(notifyMessage);
-//            return;
-//        }
-//
-//        File sourceFile = new File(appSettings.getSourceDirectory(), fileName);
-//        File targetFile = new File(targetFolder, fileName);
-//
-//        try {
-//            FileUtils.moveFile(sourceFile, targetFile);
-//            LOG.info("Файл \"{}\" перемещен в папку \"{}\"", fileName, targetFile.getAbsolutePath());
-//            MovieFileMoveResult movieFileMoveResult = taskResultFabric.create(movieFileMoveTask, true,
-//                    String.format("Файл \"%s\" перемещен в папку \"%s\"", fileName, targetFolderName));
-//            NotifyKafkaMessage notifyMessage = notifyKafkaMessageFabric.createMessage(movieFileMoveResult);
-//            messageSender.send(notifyMessage);
-//        } catch (IOException e) {
-//            LOG.error("Ошибка при перемещении файла \"{}\" в папку \"{}\"", fileName, targetFile.getAbsolutePath(), e);
-//            MovieFileMoveResult movieFileMoveResult = taskResultFabric.create(movieFileMoveTask, false,
-//                    String.format("Ошибка при перемещении файла \"%s\" в папку \"%s\"\n",
-//                            fileName, targetFolderName)
-//                            + e.getMessage());
-//            NotifyKafkaMessage notifyMessage = notifyKafkaMessageFabric.createMessage(movieFileMoveResult);
-//            messageSender.send(notifyMessage);
-//        }
-
 }
