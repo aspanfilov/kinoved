@@ -1,7 +1,7 @@
 package com.kinoved.filemanager.kafka;
 
-import com.kinoved.common.kafka.messages.NotifyKafkaMessage;
+import com.kinoved.common.kafka.messages.TaskResultKafkaMessage;
 
 public interface MessageSender {
-    void send(NotifyKafkaMessage notifyKafkaMessage);
+    void send(TaskResultKafkaMessage taskResultKafkaMessage);
 }

@@ -13,8 +13,9 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ConfirmMovieIdRequestDto {
+public class MovieIdConfirmRequestDto {
     private String searchQuery;
     private List<SearchMovieDtoV14> searchMovieDtos;
     private MovieFileInfoDto movieFileInfoDto;
+    private Integer messageId;
 }

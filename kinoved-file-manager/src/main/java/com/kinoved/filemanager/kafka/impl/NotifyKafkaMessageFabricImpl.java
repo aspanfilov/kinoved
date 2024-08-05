@@ -3,7 +3,7 @@ package com.kinoved.filemanager.kafka.impl;
 import com.kinoved.common.filemanager.dtos.MovieFileInfoDto;
 import com.kinoved.common.filemanager.dtos.MovieFileMoveResult;
 import com.kinoved.common.kafka.MessageBody;
-import com.kinoved.common.kafka.messages.NotifyKafkaMessage;
+import com.kinoved.common.kafka.messages.TaskResultKafkaMessage;
 import com.kinoved.common.kafka.enums.NotifyMessageType;
 import com.kinoved.filemanager.exceptions.UnsupportedMessageTypeException;
 import com.kinoved.filemanager.kafka.NotifyKafkaMessageFabric;
@@ -17,8 +17,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class NotifyKafkaMessageFabricImpl implements NotifyKafkaMessageFabric {
     @Override
-    public NotifyKafkaMessage createMessage(MessageBody body) {
-        return NotifyKafkaMessage.builder()
+    public TaskResultKafkaMessage createMessage(MessageBody body) {
+        return TaskResultKafkaMessage.builder()
                 .id(UUID.randomUUID())
                 .messageDate(LocalDateTime.now())
                 .messageType(getEventType(body))

@@ -1,4 +1,4 @@
-package com.kinoved.filemanager.parsers.impl;
+package com.kinoved.filemanager.parsers;
 
 import com.kinoved.filemanager.dtos.MovieFileNameDto;
 

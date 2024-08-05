@@ -4,7 +4,7 @@ import com.ibm.icu.text.Transliterator;
 import com.kinoved.common.filemanager.dtos.MovieFileInfoDto;
 import com.kinoved.filemanager.dtos.MovieFileNameDto;
 import com.kinoved.filemanager.fabrics.MovieFileInfoFabric;
-import com.kinoved.filemanager.parsers.impl.MovieFileNameParser;
+import com.kinoved.filemanager.parsers.MovieFileNameParser;
 import com.kinoved.filemanager.utils.impl.FileSystemUtilityImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

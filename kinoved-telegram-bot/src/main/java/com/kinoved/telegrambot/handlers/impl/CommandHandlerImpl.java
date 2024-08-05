@@ -1,22 +1,27 @@
 package com.kinoved.telegrambot.handlers.impl;
 
+import com.kinoved.common.enums.MovieFileStatus;
+import com.kinoved.common.filemanager.dtos.MovieFileInfoDto;
 import com.kinoved.telegrambot.client.KinovedCoreClient;
 import com.kinoved.telegrambot.client.TelegramClientWrapper;
-import com.kinoved.telegrambot.converters.MovieDataConverter;
 import com.kinoved.telegrambot.dtos.MovieDto;
 import com.kinoved.telegrambot.handlers.CommandHandler;
+import com.kinoved.telegrambot.handlers.MessageSender;
 import com.kinoved.telegrambot.keyboard.KeyboardFactory;
+import com.kinoved.telegrambot.utils.TelegramMessageBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
-import org.telegram.telegrambots.meta.api.objects.InputFile;
 
 import java.util.List;
 
+import static com.kinoved.telegrambot.constants.Constants.CHOOSE_GENRE_TEXT;
 import static com.kinoved.telegrambot.constants.Constants.COMMAND_ALL;
 import static com.kinoved.telegrambot.constants.Constants.COMMAND_FIRST;
+import static com.kinoved.telegrambot.constants.Constants.COMMAND_GENRES;
 import static com.kinoved.telegrambot.constants.Constants.COMMAND_START;
+import static com.kinoved.telegrambot.constants.Constants.COMMAND_UNFINISHED_FILES;
+import static com.kinoved.telegrambot.constants.Constants.NO_GENRE_TEXT;
 import static com.kinoved.telegrambot.constants.Constants.START_TEXT;
 
 @Component
@@ -27,7 +32,9 @@ public class CommandHandlerImpl implements CommandHandler {
 
     private final KinovedCoreClient kinovedCoreClient;
 
-    private final MovieDataConverter movieConverter;
+    private final MessageSender messageSender;
+
+    private final TelegramMessageBuilder messageBuilder;
 
     private final KeyboardFactory keyboardFactory;
 
@@ -37,6 +44,8 @@ public class CommandHandlerImpl implements CommandHandler {
             case COMMAND_START -> replyToStartCommand(chatId);
             case COMMAND_FIRST -> replyToFirstMovieCommand(chatId);
             case COMMAND_ALL -> replyToAllMoviesCommand(chatId);
+            case COMMAND_GENRES -> replyToGenresCommand(chatId);
+            case COMMAND_UNFINISHED_FILES -> replyToUnfinishedFilesCommand(chatId);
             default -> replyToUnknownCommand(chatId);
         }
     }
@@ -59,21 +68,47 @@ public class CommandHandlerImpl implements CommandHandler {
 
     private void replyToFirstMovieCommand(long chatId) {
         MovieDto movieDto = kinovedCoreClient.getFirstMovie();
-        sendMovieOverview(chatId, movieDto);
+        messageSender.sendMovieOverview(chatId, movieDto);
     }
 
     private void replyToAllMoviesCommand(long chatId) {
-        List<MovieDto> movieDtos = kinovedCoreClient.getAllMovies();
-        movieDtos.forEach(movieDto -> sendMovieOverview(chatId, movieDto));
+        List<MovieDto> movieDtos = kinovedCoreClient.getAllMovies(null);
+        movieDtos.forEach(movieDto -> messageSender.sendMovieOverview(chatId, movieDto));
     }
 
-    private void sendMovieOverview(long chatId, MovieDto movieDto) {
-        String shortOverview = movieConverter.convertToShortOverview(movieDto);
-        var sendMethod = SendPhoto.builder()
+    private void replyToGenresCommand(long chatId) {
+        List<String> genres = kinovedCoreClient.getGenres();
+
+        SendMessage sendMethod;
+        if (genres.isEmpty()) {
+            sendMethod = SendMessage.builder()
+                    .chatId(chatId)
+                    .text(NO_GENRE_TEXT)
+                    .build();
+        } else {
+            sendMethod = SendMessage.builder()
+                    .chatId(chatId)
+                    .text(CHOOSE_GENRE_TEXT)
+                    .replyMarkup(keyboardFactory.getGenresKeyboard(genres))
+                    .build();
+        }
+
+        telegramClient.execute(sendMethod);
+    }
+
+    private void replyToUnfinishedFilesCommand(long chatId) {
+
+        List<MovieFileStatus> unfinishedStatuses = List.of(
+                MovieFileStatus.NEW,
+                MovieFileStatus.MATCHED,
+                MovieFileStatus.REJECTED,
+                MovieFileStatus.MOVE_ERROR);
+
+        List<MovieFileInfoDto> movieFileInfoDtos = kinovedCoreClient.getMovieFilesInfo(unfinishedStatuses);
+
+        SendMessage sendMethod = SendMessage.builder()
                 .chatId(chatId)
-                .photo(new InputFile(movieDto.getPoster().getPreviewUrl()))
-                .caption(shortOverview)
-                .replyMarkup(keyboardFactory.getShowMoreKeyboard(movieDto.getId()))
+                .text(messageBuilder.getUnfinishedFilesMsg(movieFileInfoDtos))
                 .build();
         telegramClient.execute(sendMethod);
     }

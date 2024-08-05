@@ -1,4 +1,4 @@
-package com.kinoved.telegrambot.util;
+package com.kinoved.telegrambot.enums;
 
 public enum Emoji {
     INFO("ℹ"),
@@ -9,7 +9,8 @@ public enum Emoji {
     ARROW_UP("⬆️"),
     ARROW_DOWN("⬇️"),
     ARROW_LEFT("⬅️"),
-    ARROW_RIGHT("➡️");
+    ARROW_RIGHT("➡️"),
+    REPORT("📋");
 
     private final String emoji;
 

@@ -1,13 +1,14 @@
 package com.kinoved.telegrambot.handlers.impl;
 
-import com.kinoved.common.telegram.dtos.ConfirmMovieIdResponseDto;
+import com.kinoved.common.telegram.dtos.MovieIdConfirmResponseDto;
+import com.kinoved.common.telegram.enums.ConfirmationStatus;
 import com.kinoved.telegrambot.client.KinovedCoreClient;
 import com.kinoved.telegrambot.client.TelegramClientWrapper;
 import com.kinoved.telegrambot.converters.MovieDataConverter;
 import com.kinoved.telegrambot.dtos.MovieDto;
 import com.kinoved.telegrambot.handlers.CallbackHandler;
 import com.kinoved.telegrambot.keyboard.KeyboardFactory;
-import com.kinoved.telegrambot.util.CallbackDataUtil;
+import com.kinoved.telegrambot.utils.CallbackDataUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -16,8 +17,14 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageCa
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
+import static com.kinoved.common.telegram.enums.ConfirmationStatus.APPROVE;
+import static com.kinoved.common.telegram.enums.ConfirmationStatus.ORIGINAL_QUERY;
+import static com.kinoved.common.telegram.enums.ConfirmationStatus.REJECTED;
+import static com.kinoved.common.telegram.enums.ConfirmationStatus.TRANSLIT_QUERY;
 import static com.kinoved.telegrambot.constants.Constants.CALLBACK_MOVIE_ID_CONFIRM;
+import static com.kinoved.telegrambot.constants.Constants.CALLBACK_MOVIE_ID_ORIGINAL_QUERY;
 import static com.kinoved.telegrambot.constants.Constants.CALLBACK_MOVIE_ID_REJECT;
+import static com.kinoved.telegrambot.constants.Constants.CALLBACK_MOVIE_ID_TRANSLIT_QUERY;
 import static com.kinoved.telegrambot.constants.Constants.CALLBACK_SHOW_LESS;
 import static com.kinoved.telegrambot.constants.Constants.CALLBACK_SHOW_MORE;
 
@@ -39,11 +46,14 @@ public class CallbackHandlerImpl implements CallbackHandler {
     public void replyToCallback(Long chatId, CallbackQuery callbackQuery) {
         String callbackKeyword = callbackDataUtil.getKeywordFromCallbackData(callbackQuery.getData());
 
+        //todo
         switch (callbackKeyword) {
             case CALLBACK_SHOW_MORE -> replyToShowMoreCallback(chatId, callbackQuery);
             case CALLBACK_SHOW_LESS -> replyToShowLessCallback(chatId, callbackQuery);
             case CALLBACK_MOVIE_ID_CONFIRM -> replyToMovieIdConfirmCallback(chatId, callbackQuery);
             case CALLBACK_MOVIE_ID_REJECT -> replyToMovieIdRejectCallback(chatId, callbackQuery);
+            case CALLBACK_MOVIE_ID_TRANSLIT_QUERY -> replyToMovieIdQueryCallback(chatId, callbackQuery, TRANSLIT_QUERY);
+            case CALLBACK_MOVIE_ID_ORIGINAL_QUERY -> replyToMovieIdQueryCallback(chatId, callbackQuery, ORIGINAL_QUERY);
             default -> replyToUnknownCallback(chatId);
         }
     }
@@ -89,10 +99,10 @@ public class CallbackHandlerImpl implements CallbackHandler {
         String movieFileInfoId = callbackDataUtil.getObjectFromCallbackData(callbackQuery.getData(), 2, String.class);
         Integer movieConfirmationMessageId = callbackQuery.getMessage().getMessageId();
 
-        var confirmMovieIdResponseDto = ConfirmMovieIdResponseDto.builder()
+        var confirmMovieIdResponseDto = MovieIdConfirmResponseDto.builder()
                 .movieKpDevId(Long.parseLong(movieId))
                 .movieFileInfoId(movieFileInfoId)
-                .confirmed(true)
+                .confirmationStatus(APPROVE)
                 .build();
 
         ResponseEntity<Void> response = kinovedCoreClient.handleMovieIdConfirmation(confirmMovieIdResponseDto);
@@ -107,15 +117,35 @@ public class CallbackHandlerImpl implements CallbackHandler {
         String movieFileInfoId = callbackDataUtil.getObjectFromCallbackData(callbackQuery.getData(), 2, String.class);
         Integer movieConfirmationMessageId = callbackQuery.getMessage().getMessageId();
 
-        var confirmMovieIdResponseDto = ConfirmMovieIdResponseDto.builder()
+        var confirmMovieIdResponseDto = MovieIdConfirmResponseDto.builder()
                 .movieKpDevId(Long.parseLong(movieId))
                 .movieFileInfoId(movieFileInfoId)
-                .confirmed(false)
+                .confirmationStatus(REJECTED)
                 .build();
 
         ResponseEntity<Void> response = kinovedCoreClient.handleMovieIdConfirmation(confirmMovieIdResponseDto);
         notifyResponseStatus(chatId, movieConfirmationMessageId, response,
                 "Данные о файле помечены в статус REJECTED\nФайл ожидает ручной обработки");
+
+        deleteMessageKeyboard(chatId, movieConfirmationMessageId);
+    }
+
+    private void replyToMovieIdQueryCallback(long chatId,
+                                             CallbackQuery callbackQuery,
+                                             ConfirmationStatus status) {
+
+        String movieId = callbackDataUtil.getObjectFromCallbackData(callbackQuery.getData(), 1, String.class);
+        String movieFileInfoId = callbackDataUtil.getObjectFromCallbackData(callbackQuery.getData(), 2, String.class);
+        Integer movieConfirmationMessageId = callbackQuery.getMessage().getMessageId();
+
+        var confirmMovieIdResponseDto = MovieIdConfirmResponseDto.builder()
+                .movieKpDevId(Long.parseLong(movieId))
+                .movieFileInfoId(movieFileInfoId)
+                .confirmationStatus(status)
+                .messageId(callbackQuery.getMessage().getMessageId())
+                .build();
+
+        kinovedCoreClient.handleMovieIdConfirmation(confirmMovieIdResponseDto);
 
         deleteMessageKeyboard(chatId, movieConfirmationMessageId);
     }

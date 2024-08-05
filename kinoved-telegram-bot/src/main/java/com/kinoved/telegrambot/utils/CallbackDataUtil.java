@@ -1,4 +1,4 @@
-package com.kinoved.telegrambot.util;
+package com.kinoved.telegrambot.utils;
 
 public interface CallbackDataUtil {
 

@@ -3,7 +3,7 @@ package com.kinoved.filemanager.config;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.kinoved.common.kafka.messages.NotifyKafkaMessage;
+import com.kinoved.common.kafka.messages.TaskResultKafkaMessage;
 import com.kinoved.common.kafka.messages.TaskKafkaMessage;
 import com.kinoved.filemanager.config.props.KafkaProps;
 import org.apache.kafka.clients.admin.NewTopic;
@@ -58,22 +58,22 @@ public class KafkaConfig {
     }
 
     @Bean
-    public ProducerFactory<String, NotifyKafkaMessage> producerFactory(
+    public ProducerFactory<String, TaskResultKafkaMessage> producerFactory(
             KafkaProperties kafkaProperties, ObjectMapper mapper) {
 
         var props = kafkaProperties.buildProducerProperties();
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
 
-        var kafkaProducerFactory = new DefaultKafkaProducerFactory<String, NotifyKafkaMessage>(props);
+        var kafkaProducerFactory = new DefaultKafkaProducerFactory<String, TaskResultKafkaMessage>(props);
         kafkaProducerFactory.setValueSerializer(new JsonSerializer<>(mapper));
 
         return kafkaProducerFactory;
     }
 
     @Bean
-    public KafkaTemplate<String, NotifyKafkaMessage> kafkaTemplate
-            (ProducerFactory<String, NotifyKafkaMessage> producerFactory) {
+    public KafkaTemplate<String, TaskResultKafkaMessage> kafkaTemplate
+            (ProducerFactory<String, TaskResultKafkaMessage> producerFactory) {
         return new KafkaTemplate<>(producerFactory);
     }
 

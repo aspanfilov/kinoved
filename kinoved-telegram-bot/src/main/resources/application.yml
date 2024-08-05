@@ -8,7 +8,7 @@ spring:
 telegram:
   bot:
     token: asdf
-    username: asdf
+    username: KinovedMovieBot
     creatorId: asdf
 
 kinoved-core:

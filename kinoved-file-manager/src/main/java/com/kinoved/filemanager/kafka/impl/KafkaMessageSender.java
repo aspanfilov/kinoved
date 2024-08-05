@@ -1,7 +1,7 @@
 package com.kinoved.filemanager.kafka.impl;
 
 import com.kinoved.filemanager.config.props.KafkaProps;
-import com.kinoved.common.kafka.messages.NotifyKafkaMessage;
+import com.kinoved.common.kafka.messages.TaskResultKafkaMessage;
 import com.kinoved.filemanager.kafka.MessageSender;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -20,29 +20,29 @@ public class KafkaMessageSender implements MessageSender {
 
     private final KafkaProps kafkaProps;
 
-    private final KafkaTemplate<String, NotifyKafkaMessage> kafkaTemplate;
+    private final KafkaTemplate<String, TaskResultKafkaMessage> kafkaTemplate;
 
     @Override
-    public void send(NotifyKafkaMessage notifyKafkaMessage) {
+    public void send(TaskResultKafkaMessage taskResultKafkaMessage) {
         try {
             LOG.info("Kafka message with type: {} and id: {}",
-                    notifyKafkaMessage.getMessageType(), notifyKafkaMessage.getId());
+                    taskResultKafkaMessage.getMessageType(), taskResultKafkaMessage.getId());
 
-            kafkaTemplate.send(kafkaProps.getFileNotifyTopicName(), notifyKafkaMessage)
+            kafkaTemplate.send(kafkaProps.getFileNotifyTopicName(), taskResultKafkaMessage)
                     .whenComplete((sendResult, ex) -> {
                         if (ex == null) {
                             LOG.info(
                                     "message id:{} was sent, offset:{}",
-                                    notifyKafkaMessage.getId(),
+                                    taskResultKafkaMessage.getId(),
                                     sendResult.getRecordMetadata().offset());
                         } else {
                             LOG.error("Kafka message with type: {} and id: {} was not sent",
-                                    notifyKafkaMessage.getMessageType(), notifyKafkaMessage.getId(), ex);
+                                    taskResultKafkaMessage.getMessageType(), taskResultKafkaMessage.getId(), ex);
                         }
                     });
         } catch (Exception ex) {
             LOG.error("Broker error! Kafka message with type: {} and id: {} was not sent",
-                    notifyKafkaMessage.getMessageType(), notifyKafkaMessage.getId(), ex);
+                    taskResultKafkaMessage.getMessageType(), taskResultKafkaMessage.getId(), ex);
         }
     }
 }

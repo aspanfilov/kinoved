@@ -1,6 +1,7 @@
 package com.kinoved.filemanager.parsers;
 
 import com.kinoved.filemanager.dtos.MovieFileNameDto;
+import com.kinoved.filemanager.parsers.impl.MovieFileNameParserImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

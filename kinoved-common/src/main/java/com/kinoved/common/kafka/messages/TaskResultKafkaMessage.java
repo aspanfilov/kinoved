@@ -14,7 +14,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class NotifyKafkaMessage {
+public class TaskResultKafkaMessage {
     private UUID id;
 
     private LocalDateTime messageDate;

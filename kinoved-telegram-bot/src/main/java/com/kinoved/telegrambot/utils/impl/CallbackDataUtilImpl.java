@@ -1,9 +1,10 @@
-package com.kinoved.telegrambot.util;
+package com.kinoved.telegrambot.utils.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kinoved.telegrambot.config.AppProps;
 import com.kinoved.telegrambot.exceptions.CallbackDataException;
+import com.kinoved.telegrambot.utils.CallbackDataUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

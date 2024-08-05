@@ -1,7 +1,7 @@
-package com.kinoved.filemanager.parsers;
+package com.kinoved.filemanager.parsers.impl;
 
 import com.kinoved.filemanager.dtos.MovieFileNameDto;
-import com.kinoved.filemanager.parsers.impl.MovieFileNameParser;
+import com.kinoved.filemanager.parsers.MovieFileNameParser;
 import org.springframework.stereotype.Component;
 
 import java.util.regex.Pattern;
@@ -26,7 +26,16 @@ public class MovieFileNameParserImpl implements MovieFileNameParser {
             return movieFileNameDto;
         }
 
-        movieFileNameDto.setTitle(fileName);
+        var fileNameWithoutExtension = removeFileExtension(fileName);
+        movieFileNameDto.setTitle(fileNameWithoutExtension);
         return movieFileNameDto;
+    }
+
+    private String removeFileExtension(String fileName) {
+        int lastDotIndex = fileName.lastIndexOf('.');
+        if (lastDotIndex != -1) {
+            return fileName.substring(0, lastDotIndex);
+        }
+        return fileName;
     }
 }
