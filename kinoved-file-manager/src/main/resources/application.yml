@@ -18,7 +18,7 @@ app:
   settings:
     source-directory: D:/_Kinoved/movies source
     target-directory: D:/_Kinoved/movies genres
-    source-directory-scan-interval: 5000
+    source-directory-scan-interval: 1000
     undefined-genre-folder: "undefined"
 
   kafka:

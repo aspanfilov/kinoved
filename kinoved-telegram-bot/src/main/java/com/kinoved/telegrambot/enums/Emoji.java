@@ -10,7 +10,10 @@ public enum Emoji {
     ARROW_DOWN("⬇️"),
     ARROW_LEFT("⬅️"),
     ARROW_RIGHT("➡️"),
-    REPORT("📋");
+    REPORT("📋"),
+    CALENDAR("📅"),
+    RATING("⭐️")
+    ;
 
     private final String emoji;
 

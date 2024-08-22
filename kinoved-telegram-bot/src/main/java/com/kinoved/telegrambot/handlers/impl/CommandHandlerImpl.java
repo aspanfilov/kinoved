@@ -1,116 +1,26 @@
 package com.kinoved.telegrambot.handlers.impl;
 
-import com.kinoved.common.enums.MovieFileStatus;
-import com.kinoved.common.filemanager.dtos.MovieFileInfoDto;
-import com.kinoved.telegrambot.client.KinovedCoreClient;
-import com.kinoved.telegrambot.client.TelegramClientWrapper;
-import com.kinoved.telegrambot.dtos.MovieDto;
 import com.kinoved.telegrambot.handlers.CommandHandler;
-import com.kinoved.telegrambot.handlers.MessageSender;
-import com.kinoved.telegrambot.keyboard.KeyboardFactory;
-import com.kinoved.telegrambot.utils.TelegramMessageBuilder;
+import com.kinoved.telegrambot.handlers.strategies.command.CommandStrategy;
+import com.kinoved.telegrambot.handlers.strategies.command.UnknownCommandStrategy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.message.Message;
 
-import java.util.List;
-
-import static com.kinoved.telegrambot.constants.Constants.CHOOSE_GENRE_TEXT;
-import static com.kinoved.telegrambot.constants.Constants.COMMAND_ALL;
-import static com.kinoved.telegrambot.constants.Constants.COMMAND_FIRST;
-import static com.kinoved.telegrambot.constants.Constants.COMMAND_GENRES;
-import static com.kinoved.telegrambot.constants.Constants.COMMAND_START;
-import static com.kinoved.telegrambot.constants.Constants.COMMAND_UNFINISHED_FILES;
-import static com.kinoved.telegrambot.constants.Constants.NO_GENRE_TEXT;
-import static com.kinoved.telegrambot.constants.Constants.START_TEXT;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
 public class CommandHandlerImpl implements CommandHandler {
 
-    private final TelegramClientWrapper telegramClient;
+    private final Map<String, CommandStrategy> strategies;
 
-    private final KinovedCoreClient kinovedCoreClient;
-
-    private final MessageSender messageSender;
-
-    private final TelegramMessageBuilder messageBuilder;
-
-    private final KeyboardFactory keyboardFactory;
+    private final UnknownCommandStrategy unknownCommandStrategy;
 
     @Override
-    public void replyToCommand(Long chatId, String command) {
-        switch (command) {
-            case COMMAND_START -> replyToStartCommand(chatId);
-            case COMMAND_FIRST -> replyToFirstMovieCommand(chatId);
-            case COMMAND_ALL -> replyToAllMoviesCommand(chatId);
-            case COMMAND_GENRES -> replyToGenresCommand(chatId);
-            case COMMAND_UNFINISHED_FILES -> replyToUnfinishedFilesCommand(chatId);
-            default -> replyToUnknownCommand(chatId);
-        }
+    public void replyToCommand(Long chatId, Message message) {
+        String command = message.getText();
+        CommandStrategy strategy = strategies.getOrDefault(command, unknownCommandStrategy);
+        strategy.handleCommand(chatId, message.getFrom().getId());
     }
-
-    private void replyToStartCommand(long chatId) {
-        SendMessage sendMethod = SendMessage.builder()
-                .chatId(chatId)
-                .text(START_TEXT)
-                .build();
-        telegramClient.execute(sendMethod);
-    }
-
-    private void replyToUnknownCommand(long chatId) {
-        SendMessage sendMethod = SendMessage.builder()
-                .chatId(chatId)
-                .text("Неизвестная команда")
-                .build();
-        telegramClient.execute(sendMethod);
-    }
-
-    private void replyToFirstMovieCommand(long chatId) {
-        MovieDto movieDto = kinovedCoreClient.getFirstMovie();
-        messageSender.sendMovieOverview(chatId, movieDto);
-    }
-
-    private void replyToAllMoviesCommand(long chatId) {
-        List<MovieDto> movieDtos = kinovedCoreClient.getAllMovies(null);
-        movieDtos.forEach(movieDto -> messageSender.sendMovieOverview(chatId, movieDto));
-    }
-
-    private void replyToGenresCommand(long chatId) {
-        List<String> genres = kinovedCoreClient.getGenres();
-
-        SendMessage sendMethod;
-        if (genres.isEmpty()) {
-            sendMethod = SendMessage.builder()
-                    .chatId(chatId)
-                    .text(NO_GENRE_TEXT)
-                    .build();
-        } else {
-            sendMethod = SendMessage.builder()
-                    .chatId(chatId)
-                    .text(CHOOSE_GENRE_TEXT)
-                    .replyMarkup(keyboardFactory.getGenresKeyboard(genres))
-                    .build();
-        }
-
-        telegramClient.execute(sendMethod);
-    }
-
-    private void replyToUnfinishedFilesCommand(long chatId) {
-
-        List<MovieFileStatus> unfinishedStatuses = List.of(
-                MovieFileStatus.NEW,
-                MovieFileStatus.MATCHED,
-                MovieFileStatus.REJECTED,
-                MovieFileStatus.MOVE_ERROR);
-
-        List<MovieFileInfoDto> movieFileInfoDtos = kinovedCoreClient.getMovieFilesInfo(unfinishedStatuses);
-
-        SendMessage sendMethod = SendMessage.builder()
-                .chatId(chatId)
-                .text(messageBuilder.getUnfinishedFilesMsg(movieFileInfoDtos))
-                .build();
-        telegramClient.execute(sendMethod);
-    }
-
 }

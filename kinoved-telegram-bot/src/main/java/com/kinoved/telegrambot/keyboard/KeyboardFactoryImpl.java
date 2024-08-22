@@ -18,6 +18,11 @@ import static com.kinoved.telegrambot.constants.Constants.BUTTON_ORIGINAL_QUERY;
 import static com.kinoved.telegrambot.constants.Constants.BUTTON_REJECT;
 import static com.kinoved.telegrambot.constants.Constants.BUTTON_SHOW_LESS;
 import static com.kinoved.telegrambot.constants.Constants.BUTTON_SHOW_MORE;
+import static com.kinoved.telegrambot.constants.Constants.BUTTON_SORT_DATE_ASC;
+import static com.kinoved.telegrambot.constants.Constants.BUTTON_SORT_DATE_DESC;
+import static com.kinoved.telegrambot.constants.Constants.BUTTON_SORT_RATING_ASC;
+import static com.kinoved.telegrambot.constants.Constants.BUTTON_SORT_RATING_DESC;
+import static com.kinoved.telegrambot.constants.Constants.BUTTON_STILLS;
 import static com.kinoved.telegrambot.constants.Constants.BUTTON_TRANSLIT_QUERY;
 import static com.kinoved.telegrambot.constants.Constants.BUTTON_YES;
 import static com.kinoved.telegrambot.constants.Constants.CALLBACK_MOVIE_ID_CONFIRM;
@@ -26,6 +31,11 @@ import static com.kinoved.telegrambot.constants.Constants.CALLBACK_MOVIE_ID_REJE
 import static com.kinoved.telegrambot.constants.Constants.CALLBACK_MOVIE_ID_TRANSLIT_QUERY;
 import static com.kinoved.telegrambot.constants.Constants.CALLBACK_SHOW_LESS;
 import static com.kinoved.telegrambot.constants.Constants.CALLBACK_SHOW_MORE;
+import static com.kinoved.telegrambot.constants.Constants.CALLBACK_SORT_DATE_ASC;
+import static com.kinoved.telegrambot.constants.Constants.CALLBACK_SORT_DATE_DESC;
+import static com.kinoved.telegrambot.constants.Constants.CALLBACK_SORT_RATING_ASC;
+import static com.kinoved.telegrambot.constants.Constants.CALLBACK_SORT_RATING_DESC;
+import static com.kinoved.telegrambot.constants.Constants.CALLBACK_STILLS;
 
 @Component
 @RequiredArgsConstructor
@@ -34,28 +44,40 @@ public class KeyboardFactoryImpl implements KeyboardFactory {
     private final CallbackDataUtil callbackDataUtils;
 
     @Override
-    public InlineKeyboardMarkup getShowMoreKeyboard(String movieId) {
-        InlineKeyboardButton button = InlineKeyboardButton.builder()
+    public InlineKeyboardMarkup getShowMoreKeyboard(String movieId, Long kpDevId) {
+        InlineKeyboardButton buttonMore = InlineKeyboardButton.builder()
                 .text(BUTTON_SHOW_MORE)
                 .callbackData(callbackDataUtils.createCallbackData(
                         CALLBACK_SHOW_MORE, movieId))
                 .build();
 
+        InlineKeyboardButton buttonStills = InlineKeyboardButton.builder()
+                .text(BUTTON_STILLS)
+                .callbackData(callbackDataUtils.createCallbackData(
+                        CALLBACK_STILLS, kpDevId))
+                .build();
+
         return InlineKeyboardMarkup.builder()
-                .keyboardRow(new InlineKeyboardRow(button))
+                .keyboardRow(new InlineKeyboardRow(buttonMore, buttonStills))
                 .build();
     }
 
     @Override
-    public InlineKeyboardMarkup getShowLessKeyboard(String movieId) {
-        InlineKeyboardButton button = InlineKeyboardButton.builder()
+    public InlineKeyboardMarkup getShowLessKeyboard(String movieId, Long kpDevId) {
+        InlineKeyboardButton buttonLess = InlineKeyboardButton.builder()
                 .text(BUTTON_SHOW_LESS)
                 .callbackData(callbackDataUtils.createCallbackData(
                         CALLBACK_SHOW_LESS, movieId))
                 .build();
 
+        InlineKeyboardButton buttonStills = InlineKeyboardButton.builder()
+                .text(BUTTON_STILLS)
+                .callbackData(callbackDataUtils.createCallbackData(
+                        CALLBACK_STILLS, kpDevId))
+                .build();
+
         return InlineKeyboardMarkup.builder()
-                .keyboardRow(new InlineKeyboardRow(button))
+                .keyboardRow(new InlineKeyboardRow(buttonLess, buttonStills))
                 .build();
     }
 
@@ -128,6 +150,41 @@ public class KeyboardFactoryImpl implements KeyboardFactory {
                 .keyboard(keyboardRows)
                 .resizeKeyboard(true)
                 .oneTimeKeyboard(true)
+                .build();
+    }
+
+    @Override
+    public InlineKeyboardMarkup getSortKeyboard() {
+        InlineKeyboardButton ratingAscSortButton = InlineKeyboardButton.builder()
+                .text(BUTTON_SORT_RATING_ASC)
+                .callbackData(callbackDataUtils.createCallbackData(
+                        CALLBACK_SORT_RATING_ASC))
+                .build();
+
+        InlineKeyboardButton ratingDescSortButton = InlineKeyboardButton.builder()
+                .text(BUTTON_SORT_RATING_DESC)
+                .callbackData(callbackDataUtils.createCallbackData(
+                        CALLBACK_SORT_RATING_DESC))
+                .build();
+
+        InlineKeyboardButton dateAscSortButton = InlineKeyboardButton.builder()
+                .text(BUTTON_SORT_DATE_ASC)
+                .callbackData(callbackDataUtils.createCallbackData(
+                        CALLBACK_SORT_DATE_ASC))
+                .build();
+
+        InlineKeyboardButton dateDescSortButton = InlineKeyboardButton.builder()
+                .text(BUTTON_SORT_DATE_DESC)
+                .callbackData(callbackDataUtils.createCallbackData(
+                        CALLBACK_SORT_DATE_DESC))
+                .build();
+
+        return InlineKeyboardMarkup.builder()
+                .keyboardRow(new InlineKeyboardRow(
+                        ratingAscSortButton,
+                        ratingDescSortButton,
+                        dateAscSortButton,
+                        dateDescSortButton))
                 .build();
     }
 }

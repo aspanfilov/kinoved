@@ -15,4 +15,6 @@ public class AppProps {
     private final int captionSymbolsLimit;
 
     private final int maxDisplayedPersonsPerProfession;
+
+    private final int maxImagesPerMessage;
 }

@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface KeyboardFactory {
 
-    InlineKeyboardMarkup getShowMoreKeyboard(String movieId);
+    InlineKeyboardMarkup getShowMoreKeyboard(String movieId, Long kpDevId);
 
-    InlineKeyboardMarkup getShowLessKeyboard(String movieId);
+    InlineKeyboardMarkup getShowLessKeyboard(String movieId, Long kpDevId);
 
     InlineKeyboardMarkup getMovieIdConfirmKeyboard(Long movieId,
                                                    MovieFileInfoDto movieFileInfoDto,
@@ -18,4 +18,5 @@ public interface KeyboardFactory {
 
     ReplyKeyboardMarkup getGenresKeyboard(List<String> genres);
 
+    InlineKeyboardMarkup getSortKeyboard();
 }

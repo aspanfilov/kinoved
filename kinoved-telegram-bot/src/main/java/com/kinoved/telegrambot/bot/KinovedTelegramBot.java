@@ -4,8 +4,7 @@ import com.kinoved.telegrambot.config.TelegramBotProps;
 import com.kinoved.telegrambot.handlers.CallbackHandler;
 import com.kinoved.telegrambot.handlers.CommandHandler;
 import com.kinoved.telegrambot.handlers.GenreHandler;
-import com.kinoved.telegrambot.handlers.impl.CallbackHandlerImpl;
-import com.kinoved.telegrambot.handlers.impl.CommandHandlerImpl;
+import com.kinoved.telegrambot.handlers.impl.CallbackHandlerImpl2;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.abilitybots.api.bot.AbilityBot;
 import org.telegram.telegrambots.abilitybots.api.objects.Flag;
@@ -16,15 +15,6 @@ import org.telegram.telegrambots.meta.generics.TelegramClient;
 import java.util.function.Predicate;
 
 import static org.telegram.telegrambots.abilitybots.api.util.AbilityUtils.getChatId;
-
-//todo вывод фильмов по жанрам, отсортированным по рейтингу или по дате загрузки
-// сделать возможность выбора
-
-//todo сделать кнопку скриншотов из фильма.
-// При нажатии делается запрос к KinovedCoreClient на загрузку скриншотов.
-// Они должны где-то сохраниться,
-// после чего они отправляются в виде SendGroupMedia в качестве ответа на текущее сообщение.
-// Таким образом после просмотра изображений можно будет обратно вернуться к текущему сообщению
 
 @Component
 public class KinovedTelegramBot extends AbilityBot {
@@ -39,8 +29,8 @@ public class KinovedTelegramBot extends AbilityBot {
 
     public KinovedTelegramBot(TelegramClient telegramClient,
                               TelegramBotProps botProps,
-                              CommandHandlerImpl commandHandler,
-                              CallbackHandlerImpl callbackHandler,
+                              CommandHandler commandHandler,
+                              CallbackHandler callbackHandler,
                               GenreHandler genreHandler) {
         super(telegramClient, botProps.getUsername());
         this.botProps = botProps;
@@ -67,7 +57,7 @@ public class KinovedTelegramBot extends AbilityBot {
         return Reply.of(
                 (bot, upd) -> commandHandler.replyToCommand(
                         getChatId(upd),
-                        upd.getMessage().getText()),
+                        upd.getMessage()),
                 isBotCreator(),
                 Flag.TEXT,
                 upd -> upd.getMessage().isCommand());
@@ -77,6 +67,7 @@ public class KinovedTelegramBot extends AbilityBot {
         return Reply.of(
                 (bot, upd) -> genreHandler.replyToCommand(
                         getChatId(upd),
+                        upd.getMessage().getFrom().getId(),
                         upd.getMessage().getText()),
                 isBotCreator(),
                 Flag.TEXT,

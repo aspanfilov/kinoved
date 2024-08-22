@@ -11,9 +11,9 @@ import java.io.File;
 @RequiredArgsConstructor
 public class FileListener extends FileAlterationListenerAdaptor {
 
-    private final FileTaskHandler fileTaskHandler;
-
     private final FileSystemUtilityImpl fileSystemUtility;
+
+    private final FileTaskHandler fileTaskHandler;
 
     @Override
     public void onFileCreate(File file) {

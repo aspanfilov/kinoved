@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class MovieDataConverterImpl implements MovieDataConverter {
+public class MovieDataMapperImpl implements MovieDataMapper {
 
     //todo перенести эту логику в MessageBuilder
     private final AppProps appProps;

@@ -10,9 +10,9 @@ public class Constants {
 
 
     public static final String COMMAND_START = "/start";
-    public static final String COMMAND_FIRST = "/first";
-    public static final String COMMAND_ALL = "/all";
+    public static final String COMMAND_ALL_MOVIES = "/all";
     public static final String COMMAND_GENRES = "/genres";
+    public static final String COMMAND_SORT = "/sort";
     public static final String COMMAND_UNFINISHED_FILES = "/unfinished";
 
     public static final String CALLBACK_SHOW_MORE = "show_more";
@@ -23,6 +23,12 @@ public class Constants {
     public static final String CALLBACK_MOVIE_ID_REJECT = "movie_id_reject";
     public static final String CALLBACK_MOVIE_ID_TRANSLIT_QUERY = "movie_id_translit_query";
     public static final String CALLBACK_MOVIE_ID_ORIGINAL_QUERY = "movie_id_original_query";
+    public static final String CALLBACK_SORT_RATING_ASC = "set_sort_rating_asc";
+    public static final String CALLBACK_SORT_RATING_DESC = "set_sort_rating_desc";
+    public static final String CALLBACK_SORT_DATE_ASC = "set_sort_date_asc";
+    public static final String CALLBACK_SORT_DATE_DESC = "set_sort_date_desc";
+    public static final String CALLBACK_STILLS = "movie_stills";
+
 
     public static final String BUTTON_SHOW_MORE = "⬇ Развернуть";
     public static final String BUTTON_SHOW_LESS = "⬆ Скрыть";
@@ -32,5 +38,10 @@ public class Constants {
     public static final String BUTTON_NEXT = "➡ Далее";
     public static final String BUTTON_PREV = "⬅ Назад";
     public static final String BUTTON_REJECT = "❌ Отклонить"; //"❌ Все не подходят";
+    public static final String BUTTON_SORT_RATING_ASC = "⭐️  ↑";
+    public static final String BUTTON_SORT_RATING_DESC  = "⭐️  ↓";
+    public static final String BUTTON_SORT_DATE_ASC  = "📅  ↑";
+    public static final String BUTTON_SORT_DATE_DESC  = "📅  ↓";
+    public static final String BUTTON_STILLS  = "\uD83C\uDF9E\uFE0F Кадры";
 
 }

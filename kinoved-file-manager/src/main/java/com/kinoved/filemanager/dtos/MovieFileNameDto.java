@@ -11,6 +11,7 @@ public class MovieFileNameDto {
     private String year;
     private String resolution;
 
+
     public MovieFileNameDto(String fileName) {
         this.fileName = fileName;
     }

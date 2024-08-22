@@ -3,7 +3,7 @@ package com.kinoved.telegrambot.controllers;
 import com.kinoved.common.telegram.dtos.MovieIdConfirmRequestDto;
 import com.kinoved.common.telegram.dtos.SimpleNotificationDto;
 import com.kinoved.telegrambot.config.TelegramBotProps;
-import com.kinoved.telegrambot.handlers.MessageSender;
+import com.kinoved.telegrambot.senders.MessageSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +22,7 @@ public class ActionController {
     public ResponseEntity<Void> sendOriginalMovieIdConfirm(
             @RequestBody MovieIdConfirmRequestDto movieIdConfirmRequestDto) {
 
-        messageSender.sendMovieIdentificationMessage(
+        messageSender.sendMovieIdentification(
                 telegramBotProps.getCreatorId(),
                 movieIdConfirmRequestDto,
                 true);
@@ -34,7 +34,7 @@ public class ActionController {
     public ResponseEntity<Void> sendTranslitMovieIdConfirm(
             @RequestBody MovieIdConfirmRequestDto movieIdConfirmRequestDto) {
 
-        messageSender.sendMovieIdentificationMessage(
+        messageSender.sendMovieIdentification(
                 telegramBotProps.getCreatorId(),
                 movieIdConfirmRequestDto,
                 false);
@@ -46,7 +46,7 @@ public class ActionController {
     public ResponseEntity<Void> sendNotification(
             @RequestBody SimpleNotificationDto simpleNotificationDto) {
 
-        messageSender.sendNotificationMessage(
+        messageSender.sendNotification(
                 telegramBotProps.getCreatorId(),
                 simpleNotificationDto);
 

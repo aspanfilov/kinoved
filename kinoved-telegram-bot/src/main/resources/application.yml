@@ -7,9 +7,9 @@ spring:
 
 telegram:
   bot:
-    token: asdf
-    username: KinovedMovieBot
-    creatorId: asdf
+    token: xxx
+    username: xxx
+    creatorId: xxx
 
 kinoved-core:
   api:
@@ -20,3 +20,4 @@ app:
     callback-data-separator: ":::"
     caption-symbols-limit: 1024
     max-displayed-persons-per-profession: 5
+    max-images-per-message: 10

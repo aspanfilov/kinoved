@@ -14,3 +14,26 @@
 1721930035777:sm -q История о нас
 1721930367742:sm -q Алекс
 1722180275564:sm -q the watchers
+1723557559509:help
+1723557576064:sm -q The Watchers
+1723558001807:sm -q The Wathcers
+1723558360384:sm -q The Watchers
+1723558674109:sm -q The Wathcers
+1723577616249:gi -i @ShellMethod(value = "Get images by movie id and type", key = {"gi", "get-images"})
+1723577616292:public String getImagesByMovieId(
+1723577621661:}gi -i @ShellMethod(value = "Get images by movie id and type", key = {"gi", "get-images"})
+1723577621664:public String getImagesByMovieId(
+1723577644885:}gi -i 927898 -t still -p 1 -l 10
+1723577660505:gi -i 927898 -t still -p 1 -l 10
+1723577671543:gi -i 927898 -t STILL -p 1 -l 10
+1723577693607:gi -i 927898 -t still -p 1 -l 10
+1723578485939:gi -i У меня вот такое перечисление
+1723578485977:public enum KinopoiskImageType {
+1723578486020:}
+1723578486026:Вот такой метод клиента
+1723578486077:
+1723578503500:Я хочу при обращении в метод в качестве параметра type передавать в нижнем регистре значенияgi -i 927898 -t still -p 1 -l 10
+1723578566418:gi -i 927898 -t still -p 1 -l 10
+1723641615501:gi -i 927898 -t still
+1723901251945:gi -i 1044280
+1723901263467:gi -i 1044280 -t still
