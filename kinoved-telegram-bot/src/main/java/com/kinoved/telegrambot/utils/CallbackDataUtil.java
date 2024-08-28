@@ -6,7 +6,9 @@ public interface CallbackDataUtil {
 
     String getParamFromCallbackData(String callback, int index);
 
-    String createCallbackData(String key, Object... objs);
+//    String createCallbackData(String key, Object... objs);
 
-    public <T> T getObjectFromCallbackData(String callbackData, int index, Class<T> clazz);
+    String createCallbackData(String key, String... params);
+
+//    <T> T getObjectFromCallbackData(String callbackData, int index, Class<T> clazz);
 }

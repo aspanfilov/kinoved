@@ -8,7 +8,7 @@ import com.kinoved.telegrambot.senders.EditMessageSender;
 import com.kinoved.telegrambot.utils.MessageBuilder;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
-public class MovieSortCallbackStrategy implements CallbackStrategy {
+public class SortMovieCallbackStrategy implements CallbackStrategy {
 
     private final KinovedCoreClient kinovedCoreClient;
     private final MessageBuilder messageBuilder;
@@ -16,7 +16,7 @@ public class MovieSortCallbackStrategy implements CallbackStrategy {
     private final SortField sortField;
     private final SortOrder sortOrder;
 
-    public MovieSortCallbackStrategy(
+    public SortMovieCallbackStrategy(
             KinovedCoreClient kinovedCoreClient,
             MessageBuilder messageBuilder,
             EditMessageSender editMessageSender,

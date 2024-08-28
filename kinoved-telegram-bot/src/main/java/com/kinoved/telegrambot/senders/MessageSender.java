@@ -2,7 +2,7 @@ package com.kinoved.telegrambot.senders;
 
 import com.kinoved.common.telegram.dtos.MovieIdConfirmRequestDto;
 import com.kinoved.common.telegram.dtos.SimpleNotificationDto;
-import com.kinoved.telegrambot.dtos.MovieDto;
+import com.kinoved.common.telegram.dtos.MovieDto;
 import org.springframework.http.ResponseEntity;
 import org.telegram.telegrambots.meta.api.objects.media.InputMediaPhoto;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;

@@ -3,7 +3,7 @@ package com.kinoved.filemanager.handlers.impl;
 import com.kinoved.common.filemanager.dtos.MovieFileInfoDto;
 import com.kinoved.common.filemanager.dtos.MovieFileMoveTask;
 import com.kinoved.filemanager.config.props.AppSettings;
-import com.kinoved.filemanager.fabrics.MovieFileInfoFabric;
+import com.kinoved.filemanager.factories.MovieFileInfoFactory;
 import com.kinoved.filemanager.handlers.FileTaskHandler;
 import com.kinoved.filemanager.handlers.NotificationSender;
 import com.kinoved.filemanager.utils.FileSystemUtility;
@@ -24,7 +24,7 @@ public class FileTaskHandlerImpl implements FileTaskHandler {
 
     private final AppSettings appSettings;
 
-    private final MovieFileInfoFabric movieFileInfoFabric;
+    private final MovieFileInfoFactory movieFileInfoFabric;
 
     private final FileSystemUtility fileSystemUtility;
 

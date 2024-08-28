@@ -1,9 +1,9 @@
-package com.kinoved.filemanager.fabrics;
+package com.kinoved.filemanager.factories;
 
 import com.kinoved.common.filemanager.dtos.MovieFileInfoDto;
 
 import java.io.File;
 
-public interface MovieFileInfoFabric {
+public interface MovieFileInfoFactory {
     MovieFileInfoDto create(File file);
 }

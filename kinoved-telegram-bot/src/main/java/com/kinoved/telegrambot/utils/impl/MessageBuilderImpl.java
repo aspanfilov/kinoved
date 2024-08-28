@@ -38,7 +38,7 @@ public class MessageBuilderImpl implements MessageBuilder {
                 : "по убыванию";
 
         return String.format(
-                "Текущая сортировка: \"%s %s.\"\n\nВыберите желаемую сортировку:",
+                "Текущая сортировка:\n\"%s %s.\"\n\nВыберите желаемую сортировку:",
                 sortField, sortOrder
         );
     }

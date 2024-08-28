@@ -27,8 +27,8 @@ public class MovieIdConfirmCallbackStrategy implements CallbackStrategy {
 
     @Override
     public void handleCallback(Long chatId, CallbackQuery callbackQuery) {
-        String movieId = callbackDataUtil.getObjectFromCallbackData(callbackQuery.getData(), 1, String.class);
-        String movieFileInfoId = callbackDataUtil.getObjectFromCallbackData(callbackQuery.getData(), 2, String.class);
+        String movieId = callbackDataUtil.getParamFromCallbackData(callbackQuery.getData(), 1);
+        String movieFileInfoId = callbackDataUtil.getParamFromCallbackData(callbackQuery.getData(), 2);
         Integer movieConfirmationMessageId = callbackQuery.getMessage().getMessageId();
 
         var confirmMovieIdResponseDto = MovieIdConfirmResponseDto.builder()

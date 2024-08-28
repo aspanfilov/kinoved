@@ -6,7 +6,7 @@ import com.kinoved.common.telegram.dtos.SimpleNotificationDto;
 import com.kinoved.common.telegram.enums.NotificationType;
 import com.kinoved.telegrambot.client.TelegramClientWrapper;
 import com.kinoved.telegrambot.converters.MovieDataMapper;
-import com.kinoved.telegrambot.dtos.MovieDto;
+import com.kinoved.common.telegram.dtos.MovieDto;
 import com.kinoved.telegrambot.enums.Emoji;
 import com.kinoved.telegrambot.keyboard.KeyboardFactory;
 import com.kinoved.telegrambot.senders.MessageSender;
@@ -86,7 +86,9 @@ public class MessageSenderImpl implements MessageSender {
                 .caption(shortOverview)
                 .replyMarkup(keyboardFactory.getShowMoreKeyboard(
                         movieDto.getId(),
-                        movieDto.getExternalId().getKpDev()))
+                        movieDto.getExternalId().getKpDev(),
+                        movieDto.getFavorite(),
+                        movieDto.getWatched()))
                 .build();
 
         telegramClient.execute(sendMethod);

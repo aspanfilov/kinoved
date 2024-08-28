@@ -4,7 +4,7 @@ import com.kinoved.common.filemanager.dtos.MovieFileInfoDto;
 import com.kinoved.common.filemanager.dtos.MovieFileMoveResult;
 import com.kinoved.common.filemanager.dtos.MovieFileMoveTask;
 import com.kinoved.common.kafka.messages.TaskResultKafkaMessage;
-import com.kinoved.filemanager.fabrics.TaskResultFabric;
+import com.kinoved.filemanager.factories.TaskResultFactory;
 import com.kinoved.filemanager.handlers.NotificationSender;
 import com.kinoved.filemanager.kafka.MessageSender;
 import com.kinoved.filemanager.kafka.NotifyKafkaMessageFabric;
@@ -17,7 +17,7 @@ public class NotificationSenderImpl implements NotificationSender {
 
     private final MessageSender messageSender;
 
-    private final TaskResultFabric taskResultFabric;
+    private final TaskResultFactory taskResultFabric;
 
     private final NotifyKafkaMessageFabric notifyKafkaMessageFabric;
 

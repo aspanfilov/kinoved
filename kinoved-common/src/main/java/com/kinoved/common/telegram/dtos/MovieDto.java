@@ -1,9 +1,10 @@
-package com.kinoved.telegrambot.dtos;
+package com.kinoved.common.telegram.dtos;
 
 import com.kinoved.common.kinopoisk.dtos.movies.LinkedMovieDtoV14;
 
 import com.kinoved.common.kinopoisk.dtos.movies.details.AudienceDto;
 import com.kinoved.common.kinopoisk.dtos.movies.details.CurrencyValueDto;
+import com.kinoved.common.kinopoisk.dtos.movies.details.ExternalIdDto;
 import com.kinoved.common.kinopoisk.dtos.movies.details.FactInMovieDto;
 import com.kinoved.common.kinopoisk.dtos.movies.details.FeesDto;
 import com.kinoved.common.kinopoisk.dtos.movies.details.LogoDto;
@@ -19,15 +20,22 @@ import com.kinoved.common.kinopoisk.dtos.movies.details.VideoTypesDto;
 import com.kinoved.common.kinopoisk.dtos.movies.details.VotesDto;
 import com.kinoved.common.kinopoisk.dtos.movies.details.WatchabilityDto;
 import com.kinoved.common.kinopoisk.dtos.movies.details.YearRangeDto;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class MovieDto {
     private String id;
-    private ExternalId externalId;
+    private KinovedExternalIdDto externalId;
 
     // todo возможно оформить перечисление для этих полей
     private String type; // Тип тайтла. Доступны: movie | tv-series | cartoon | anime | animated-series | tv-show
@@ -92,6 +100,9 @@ public class MovieDto {
     private String kpCreatedAt; // ($date-time) дата создания на кинопоиске
     private String kpUpdatedAt; // ($date-time) дата обновления на кинопоиске
 
-    private Date createdAt; // ($date-time) дата создания
-    private Date updatedAt; // ($date-time) дата обновления
+    private Boolean favorite;
+    private Boolean watched;
+
+    private LocalDateTime createdAt; // ($date-time) дата создания
+    private LocalDateTime updatedAt; // ($date-time) дата обновления
 }

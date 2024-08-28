@@ -4,7 +4,7 @@ import com.kinoved.common.kinopoisk.dtos.movies.SearchMovieDtoV14;
 import com.kinoved.common.kinopoisk.dtos.movies.details.PersonInMovieDto;
 import com.kinoved.common.kinopoisk.dtos.movies.details.ItemNameDto;
 import com.kinoved.telegrambot.config.AppProps;
-import com.kinoved.telegrambot.dtos.MovieDto;
+import com.kinoved.common.telegram.dtos.MovieDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -34,7 +34,8 @@ public class MovieDataMapperImpl implements MovieDataMapper {
                 movieDto.getAgeRating());
         String ratingsLine = getRatingsLine(
                 movieDto.getRating().getKp(),
-                movieDto.getRating().getImdb());
+                movieDto.getRating().getImdb(),
+                movieDto.getFavorite(), movieDto.getWatched());
         String kinopoiskRef = getKinopoiskRef(
                 movieDto.getExternalId().getKpDev());
 
@@ -77,7 +78,8 @@ public class MovieDataMapperImpl implements MovieDataMapper {
                 movieDto.getAgeRating());
         String ratingsLine = getRatingsLine(
                 movieDto.getRating().getKp(),
-                movieDto.getRating().getImdb());
+                movieDto.getRating().getImdb(),
+                false, false);
         String descriptionLine = getDescription(movieDto.getDescription());
         String kinopoiskRef = getKinopoiskRef(
                 movieDto.getId());
@@ -107,9 +109,16 @@ public class MovieDataMapperImpl implements MovieDataMapper {
                 ageRating != null ? ageRating + "+" : "");
     }
 
-    private String getRatingsLine(Double kp, Double imdb) {
-        return String.format("⭐ %.2f КП  (IMDb: %.1f)",
-                kp, imdb);
+    private String getRatingsLine(Double kp, Double imdb, boolean favorite, boolean watched) {
+        StringBuilder ratingsLine = new StringBuilder();
+        ratingsLine.append(String.format("⭐ %.2f КП  (IMDb: %.1f)   ", kp, imdb));
+        if (favorite) {
+            ratingsLine.append(" 📌");
+        };
+        if (watched) {
+            ratingsLine.append(" ✅");
+        }
+        return ratingsLine.toString();
     }
 
     private String getKinopoiskRef(Long movieId) {

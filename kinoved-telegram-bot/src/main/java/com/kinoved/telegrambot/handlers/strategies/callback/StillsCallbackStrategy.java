@@ -5,7 +5,7 @@ import com.kinoved.common.telegram.dtos.MovieImageDto;
 import com.kinoved.telegrambot.client.KinovedCoreClient;
 import com.kinoved.telegrambot.config.AppProps;
 import com.kinoved.telegrambot.converters.MovieDataMapper;
-import com.kinoved.telegrambot.dtos.MovieDto;
+import com.kinoved.common.telegram.dtos.MovieDto;
 import com.kinoved.telegrambot.senders.MessageSender;
 import com.kinoved.telegrambot.utils.CallbackDataUtil;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +39,7 @@ public class StillsCallbackStrategy implements CallbackStrategy {
     public void handleCallback(Long chatId, CallbackQuery callbackQuery) {
         var msgId = callbackQuery.getMessage().getMessageId();
 
-        String kpDevId = callbackDataUtil.getObjectFromCallbackData(callbackQuery.getData(), 1, String.class);
+        String kpDevId = callbackDataUtil.getParamFromCallbackData(callbackQuery.getData(), 1);
 
         List<InputMediaPhoto> photos = getFilteredMediaPhotos(kpDevId);
 

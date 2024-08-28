@@ -29,31 +29,40 @@ public class CallbackDataUtilImpl implements CallbackDataUtil {
         return callback.split(appProps.getCallbackDataSeparator())[index];
     }
 
-    @Override
-    public String createCallbackData(String key, Object... objs) {
-        try {
-            StringBuilder sb = new StringBuilder(key);
-            for (Object obj : objs) {
-                String json = objectMapper.writeValueAsString(obj);
-                sb.append(appProps.getCallbackDataSeparator()).append(json);
-            }
-            return sb.toString();
-        } catch (JsonProcessingException e) {
-            throw new CallbackDataException("Error serializing callback data", e);
-        }
-    }
+//    @Override
+//    public String createCallbackData(String key, Object... objs) {
+//        try {
+//            StringBuilder sb = new StringBuilder(key);
+//            for (Object obj : objs) {
+//                String json = objectMapper.writeValueAsString(obj);
+//                sb.append(appProps.getCallbackDataSeparator()).append(json);
+//            }
+//            return sb.toString();
+//        } catch (JsonProcessingException e) {
+//            throw new CallbackDataException("Error serializing callback data", e);
+//        }
+//    }
 
     @Override
-    public <T> T getObjectFromCallbackData(String callbackData, int index, Class<T> clazz) {
-        try {
-            String[] parts = callbackData.split(appProps.getCallbackDataSeparator());
-            if (parts.length <= index) {
-                throw new IllegalArgumentException("Invalid callback data format or index");
-            }
-            return objectMapper.readValue(parts[index], clazz);
-        } catch (JsonProcessingException e) {
-            throw new CallbackDataException("Error deserializing callback data", e);
+    public String createCallbackData(String key, String... params) {
+        StringBuilder sb = new StringBuilder(key);
+        for (String param : params) {
+            sb.append(appProps.getCallbackDataSeparator()).append(param);
         }
+        return sb.toString();
     }
+
+//    @Override
+//    public <T> T getObjectFromCallbackData(String callbackData, int index, Class<T> clazz) {
+//        try {
+//            String[] parts = callbackData.split(appProps.getCallbackDataSeparator());
+//            if (parts.length <= index) {
+//                throw new IllegalArgumentException("Invalid callback data format or index");
+//            }
+//            return objectMapper.readValue(parts[index], clazz);
+//        } catch (JsonProcessingException e) {
+//            throw new CallbackDataException("Error deserializing callback data", e);
+//        }
+//    }
 
 }

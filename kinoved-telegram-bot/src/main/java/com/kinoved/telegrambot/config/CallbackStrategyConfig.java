@@ -4,7 +4,7 @@ import com.kinoved.common.enums.SortField;
 import com.kinoved.common.enums.SortOrder;
 import com.kinoved.common.telegram.enums.ConfirmationStatus;
 import com.kinoved.telegrambot.client.KinovedCoreClient;
-import com.kinoved.telegrambot.handlers.strategies.callback.MovieSortCallbackStrategy;
+import com.kinoved.telegrambot.handlers.strategies.callback.SortMovieCallbackStrategy;
 import com.kinoved.telegrambot.senders.EditMessageSender;
 import com.kinoved.telegrambot.handlers.strategies.callback.MovieIdQueryCallbackStrategy;
 import com.kinoved.telegrambot.utils.CallbackDataUtil;
@@ -49,12 +49,12 @@ public class CallbackStrategyConfig {
     }
 
     @Bean(CALLBACK_SORT_RATING_ASC)
-    public MovieSortCallbackStrategy movieSortRatingAscCallbackStrategy(
+    public SortMovieCallbackStrategy movieSortRatingAscCallbackStrategy(
             KinovedCoreClient kinovedCoreClient,
             MessageBuilder messageBuilder,
             EditMessageSender editMessageSender) {
 
-        return new MovieSortCallbackStrategy(
+        return new SortMovieCallbackStrategy(
                 kinovedCoreClient,
                 messageBuilder,
                 editMessageSender,
@@ -63,12 +63,12 @@ public class CallbackStrategyConfig {
     }
 
     @Bean(CALLBACK_SORT_RATING_DESC)
-    public MovieSortCallbackStrategy movieSortRatingDescCallbackStrategy(
+    public SortMovieCallbackStrategy movieSortRatingDescCallbackStrategy(
             KinovedCoreClient kinovedCoreClient,
             MessageBuilder messageBuilder,
             EditMessageSender editMessageSender) {
 
-        return new MovieSortCallbackStrategy(
+        return new SortMovieCallbackStrategy(
                 kinovedCoreClient,
                 messageBuilder,
                 editMessageSender,
@@ -77,12 +77,12 @@ public class CallbackStrategyConfig {
     }
 
     @Bean(CALLBACK_SORT_DATE_ASC)
-    public MovieSortCallbackStrategy movieSortDateAscCallbackStrategy(
+    public SortMovieCallbackStrategy movieSortDateAscCallbackStrategy(
             KinovedCoreClient kinovedCoreClient,
             MessageBuilder messageBuilder,
             EditMessageSender editMessageSender) {
 
-        return new MovieSortCallbackStrategy(
+        return new SortMovieCallbackStrategy(
                 kinovedCoreClient,
                 messageBuilder,
                 editMessageSender,
@@ -91,12 +91,12 @@ public class CallbackStrategyConfig {
     }
 
     @Bean(CALLBACK_SORT_DATE_DESC)
-    public MovieSortCallbackStrategy movieSortDateDescCallbackStrategy(
+    public SortMovieCallbackStrategy movieSortDateDescCallbackStrategy(
             KinovedCoreClient kinovedCoreClient,
             MessageBuilder messageBuilder,
             EditMessageSender editMessageSender) {
 
-        return new MovieSortCallbackStrategy(
+        return new SortMovieCallbackStrategy(
                 kinovedCoreClient,
                 messageBuilder,
                 editMessageSender,

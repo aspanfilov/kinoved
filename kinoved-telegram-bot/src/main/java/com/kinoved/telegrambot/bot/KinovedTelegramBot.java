@@ -4,7 +4,6 @@ import com.kinoved.telegrambot.config.TelegramBotProps;
 import com.kinoved.telegrambot.handlers.CallbackHandler;
 import com.kinoved.telegrambot.handlers.CommandHandler;
 import com.kinoved.telegrambot.handlers.GenreHandler;
-import com.kinoved.telegrambot.handlers.impl.CallbackHandlerImpl2;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.abilitybots.api.bot.AbilityBot;
 import org.telegram.telegrambots.abilitybots.api.objects.Flag;

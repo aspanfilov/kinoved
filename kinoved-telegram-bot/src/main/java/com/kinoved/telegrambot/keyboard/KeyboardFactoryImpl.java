@@ -14,6 +14,11 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.kinoved.telegrambot.constants.Constants.BUTTON_FAVORITE;
+import static com.kinoved.telegrambot.constants.Constants.BUTTON_FILTER_FAVORITE;
+import static com.kinoved.telegrambot.constants.Constants.BUTTON_FILTER_HIGH_RES;
+import static com.kinoved.telegrambot.constants.Constants.BUTTON_FILTER_LAST;
+import static com.kinoved.telegrambot.constants.Constants.BUTTON_FILTER_WATCHED;
 import static com.kinoved.telegrambot.constants.Constants.BUTTON_ORIGINAL_QUERY;
 import static com.kinoved.telegrambot.constants.Constants.BUTTON_REJECT;
 import static com.kinoved.telegrambot.constants.Constants.BUTTON_SHOW_LESS;
@@ -24,18 +29,25 @@ import static com.kinoved.telegrambot.constants.Constants.BUTTON_SORT_RATING_ASC
 import static com.kinoved.telegrambot.constants.Constants.BUTTON_SORT_RATING_DESC;
 import static com.kinoved.telegrambot.constants.Constants.BUTTON_STILLS;
 import static com.kinoved.telegrambot.constants.Constants.BUTTON_TRANSLIT_QUERY;
+import static com.kinoved.telegrambot.constants.Constants.BUTTON_WATCHED;
 import static com.kinoved.telegrambot.constants.Constants.BUTTON_YES;
+import static com.kinoved.telegrambot.constants.Constants.CALLBACK_MARK_FAVORITE_MOVIE;
+import static com.kinoved.telegrambot.constants.Constants.CALLBACK_FILTER_FAVORITE_MOVIE;
+import static com.kinoved.telegrambot.constants.Constants.CALLBACK_FILTER_HIGH_RES_MOVIE;
+import static com.kinoved.telegrambot.constants.Constants.CALLBACK_FILTER_LAST_MOVIE;
+import static com.kinoved.telegrambot.constants.Constants.CALLBACK_FILTER_WATCHED_MOVIE;
 import static com.kinoved.telegrambot.constants.Constants.CALLBACK_MOVIE_ID_CONFIRM;
 import static com.kinoved.telegrambot.constants.Constants.CALLBACK_MOVIE_ID_ORIGINAL_QUERY;
 import static com.kinoved.telegrambot.constants.Constants.CALLBACK_MOVIE_ID_REJECT;
 import static com.kinoved.telegrambot.constants.Constants.CALLBACK_MOVIE_ID_TRANSLIT_QUERY;
-import static com.kinoved.telegrambot.constants.Constants.CALLBACK_SHOW_LESS;
-import static com.kinoved.telegrambot.constants.Constants.CALLBACK_SHOW_MORE;
+import static com.kinoved.telegrambot.constants.Constants.CALLBACK_SHOW_LESS_MOVIE_INFO;
+import static com.kinoved.telegrambot.constants.Constants.CALLBACK_SHOW_MORE_MOVIE_INFO;
 import static com.kinoved.telegrambot.constants.Constants.CALLBACK_SORT_DATE_ASC;
 import static com.kinoved.telegrambot.constants.Constants.CALLBACK_SORT_DATE_DESC;
 import static com.kinoved.telegrambot.constants.Constants.CALLBACK_SORT_RATING_ASC;
 import static com.kinoved.telegrambot.constants.Constants.CALLBACK_SORT_RATING_DESC;
 import static com.kinoved.telegrambot.constants.Constants.CALLBACK_STILLS;
+import static com.kinoved.telegrambot.constants.Constants.CALLBACK_MARK_WATCHED_MOVIE;
 
 @Component
 @RequiredArgsConstructor
@@ -44,40 +56,68 @@ public class KeyboardFactoryImpl implements KeyboardFactory {
     private final CallbackDataUtil callbackDataUtils;
 
     @Override
-    public InlineKeyboardMarkup getShowMoreKeyboard(String movieId, Long kpDevId) {
+    public InlineKeyboardMarkup getShowMoreKeyboard(String movieId, Long kpDevId,
+                                                    Boolean isFavorite, Boolean isWatched) {
         InlineKeyboardButton buttonMore = InlineKeyboardButton.builder()
                 .text(BUTTON_SHOW_MORE)
                 .callbackData(callbackDataUtils.createCallbackData(
-                        CALLBACK_SHOW_MORE, movieId))
+                        CALLBACK_SHOW_MORE_MOVIE_INFO, movieId))
                 .build();
 
         InlineKeyboardButton buttonStills = InlineKeyboardButton.builder()
                 .text(BUTTON_STILLS)
                 .callbackData(callbackDataUtils.createCallbackData(
-                        CALLBACK_STILLS, kpDevId))
+                        CALLBACK_STILLS, kpDevId.toString()))
+                .build();
+
+        InlineKeyboardButton buttonFavorite = InlineKeyboardButton.builder()
+                .text(BUTTON_FAVORITE)
+                .callbackData(callbackDataUtils.createCallbackData(
+                        CALLBACK_MARK_FAVORITE_MOVIE, kpDevId.toString(), isFavorite.toString()))
+                .build();
+
+        InlineKeyboardButton buttonWatched = InlineKeyboardButton.builder()
+                .text(BUTTON_WATCHED)
+                .callbackData(callbackDataUtils.createCallbackData(
+                        CALLBACK_MARK_WATCHED_MOVIE, kpDevId.toString(), isWatched.toString()))
                 .build();
 
         return InlineKeyboardMarkup.builder()
-                .keyboardRow(new InlineKeyboardRow(buttonMore, buttonStills))
+                .keyboardRow(new InlineKeyboardRow(buttonStills, buttonFavorite, buttonWatched))
+                .keyboardRow(new InlineKeyboardRow(buttonMore))
                 .build();
     }
 
     @Override
-    public InlineKeyboardMarkup getShowLessKeyboard(String movieId, Long kpDevId) {
+    public InlineKeyboardMarkup getShowLessKeyboard(String movieId, Long kpDevId,
+                                                    Boolean isFavorite, Boolean isWatched) {
         InlineKeyboardButton buttonLess = InlineKeyboardButton.builder()
                 .text(BUTTON_SHOW_LESS)
                 .callbackData(callbackDataUtils.createCallbackData(
-                        CALLBACK_SHOW_LESS, movieId))
+                        CALLBACK_SHOW_LESS_MOVIE_INFO, movieId))
                 .build();
 
         InlineKeyboardButton buttonStills = InlineKeyboardButton.builder()
                 .text(BUTTON_STILLS)
                 .callbackData(callbackDataUtils.createCallbackData(
-                        CALLBACK_STILLS, kpDevId))
+                        CALLBACK_STILLS, kpDevId.toString()))
+                .build();
+
+        InlineKeyboardButton buttonFavorite = InlineKeyboardButton.builder()
+                .text(BUTTON_FAVORITE)
+                .callbackData(callbackDataUtils.createCallbackData(
+                        CALLBACK_MARK_FAVORITE_MOVIE, kpDevId.toString(), isFavorite.toString()))
+                .build();
+
+        InlineKeyboardButton buttonWatched = InlineKeyboardButton.builder()
+                .text(BUTTON_WATCHED)
+                .callbackData(callbackDataUtils.createCallbackData(
+                        CALLBACK_MARK_WATCHED_MOVIE, kpDevId.toString(), isWatched.toString()))
                 .build();
 
         return InlineKeyboardMarkup.builder()
-                .keyboardRow(new InlineKeyboardRow(buttonLess, buttonStills))
+                .keyboardRow(new InlineKeyboardRow(buttonStills, buttonFavorite, buttonWatched))
+                .keyboardRow(new InlineKeyboardRow(buttonLess))
                 .build();
     }
 
@@ -90,7 +130,7 @@ public class KeyboardFactoryImpl implements KeyboardFactory {
                 .text(BUTTON_YES)
                 .callbackData(callbackDataUtils.createCallbackData(
                         CALLBACK_MOVIE_ID_CONFIRM,
-                        movieId,
+                        movieId.toString(),
                         movieFileInfoDto.getId()))
                 .build();
 
@@ -98,7 +138,7 @@ public class KeyboardFactoryImpl implements KeyboardFactory {
                 .text(BUTTON_REJECT)
                 .callbackData(callbackDataUtils.createCallbackData(
                         CALLBACK_MOVIE_ID_REJECT,
-                        movieId,
+                        movieId.toString(),
                         movieFileInfoDto.getId()))
                 .build();
 
@@ -108,7 +148,7 @@ public class KeyboardFactoryImpl implements KeyboardFactory {
                     .text(BUTTON_TRANSLIT_QUERY)
                     .callbackData(callbackDataUtils.createCallbackData(
                             CALLBACK_MOVIE_ID_TRANSLIT_QUERY,
-                            movieId,
+                            movieId.toString(),
                             movieFileInfoDto.getId()))
                     .build();
         } else {
@@ -116,7 +156,7 @@ public class KeyboardFactoryImpl implements KeyboardFactory {
                     .text(BUTTON_ORIGINAL_QUERY)
                     .callbackData(callbackDataUtils.createCallbackData(
                             CALLBACK_MOVIE_ID_ORIGINAL_QUERY,
-                            movieId,
+                            movieId.toString(),
                             movieFileInfoDto.getId()))
                     .build();
         }
@@ -129,22 +169,7 @@ public class KeyboardFactoryImpl implements KeyboardFactory {
     @Override
     public ReplyKeyboardMarkup getGenresKeyboard(List<String> genres) {
 
-        List<String> genreList = new ArrayList<>(genres);
-
-        List<KeyboardRow> keyboardRows = new ArrayList<>();
-        KeyboardRow currentRow = new KeyboardRow();
-
-        for (int i = 0; i < genreList.size(); i++) {
-            if (i % 3 == 0 && !currentRow.isEmpty()) {
-                keyboardRows.add(currentRow);
-                currentRow = new KeyboardRow();
-            }
-            currentRow.add(new KeyboardButton(genreList.get(i)));
-        }
-
-        if (!currentRow.isEmpty()) {
-            keyboardRows.add(currentRow);
-        }
+        List<KeyboardRow> keyboardRows = createKeyboardRows(genres);
 
         return ReplyKeyboardMarkup.builder()
                 .keyboard(keyboardRows)
@@ -186,5 +211,60 @@ public class KeyboardFactoryImpl implements KeyboardFactory {
                         dateAscSortButton,
                         dateDescSortButton))
                 .build();
+    }
+
+    @Override
+    public InlineKeyboardMarkup getFiltersKeyboard() {
+        InlineKeyboardButton lastButton = InlineKeyboardButton.builder()
+                .text(BUTTON_FILTER_LAST)
+                .callbackData(callbackDataUtils.createCallbackData(
+                        CALLBACK_FILTER_LAST_MOVIE))
+                .build();
+
+        InlineKeyboardButton favoriteButton = InlineKeyboardButton.builder()
+                .text(BUTTON_FILTER_FAVORITE)
+                .callbackData(callbackDataUtils.createCallbackData(
+                        CALLBACK_FILTER_FAVORITE_MOVIE))
+                .build();
+
+        InlineKeyboardButton highResolutionButton = InlineKeyboardButton.builder()
+                .text(BUTTON_FILTER_HIGH_RES)
+                .callbackData(callbackDataUtils.createCallbackData(
+                        CALLBACK_FILTER_HIGH_RES_MOVIE))
+                .build();
+
+        InlineKeyboardButton watchedButton = InlineKeyboardButton.builder()
+                .text(BUTTON_FILTER_WATCHED)
+                .callbackData(callbackDataUtils.createCallbackData(
+                        CALLBACK_FILTER_WATCHED_MOVIE))
+                .build();
+
+        return InlineKeyboardMarkup.builder()
+                .keyboardRow(new InlineKeyboardRow(
+                        lastButton,
+                        favoriteButton,
+                        highResolutionButton,
+                        watchedButton))
+                .build();
+    }
+
+    private List<KeyboardRow> createKeyboardRows(List<String> genres) {
+        List<KeyboardRow> keyboardRows = new ArrayList<>();
+        KeyboardRow currentRow = new KeyboardRow();
+
+        for (int i = 0; i < genres.size(); i++) {
+            if (i % 3 == 0 && !currentRow.isEmpty()) {
+                keyboardRows.add(currentRow);
+                currentRow = new KeyboardRow();
+            }
+
+            currentRow.add(new KeyboardButton(genres.get(i)));
+        }
+
+        if (!currentRow.isEmpty()) {
+            keyboardRows.add(currentRow);
+        }
+
+        return keyboardRows;
     }
 }
