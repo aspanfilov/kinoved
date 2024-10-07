@@ -1,0 +1,62 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: kinoved-core
+
+  kafka:
+    bootstrap-servers: "127.0.0.1:9092"
+    consumer:
+      client-id: "consumer-kinoved-core"
+      group-id: "group-kinoved-core"
+      auto-offset-reset: earliest
+    producer:
+      client-id: "producer-kinoved-core"
+
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: kinoved
+
+  shell:
+    interactive:
+      enabled: true
+    noninteractive:
+      enabled: false
+    command:
+      version:
+        enabled: false
+
+kinopoisk:
+  api:
+    url: https://api.kinopoisk.dev
+    token: asdf
+    version: v1.4
+    paths:
+      searchMovies: movie/search
+      movieDetails: movie
+      imageDetails: images
+
+kinoved-telegram-bot:
+  api:
+    url: http://localhost:8081
+
+app:
+  settings:
+  kafka:
+    topics:
+      file-task:
+        name: "file-task-topic"
+        partitions: 1
+        replicas: 1
+      file-notify:
+        name: "file-notify-topic"
+        partitions: 1
+        replicas: 1
+    consumer:
+      max-poll-records: 1
+      max-poll-interval: 10000
+    listener:
+      poll-timeout: 1000

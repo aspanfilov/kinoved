@@ -1,0 +1,9 @@
+### Confirm Movie ID
+POST http://localhost:8080/api/v1/actions/movie-id-confirmation
+Content-Type: application/json
+
+{
+  "movieId": 4986913,
+  "movieFileInfoId": "66a942d39496743ad48d1f3e",
+  "confirmed": true
+}

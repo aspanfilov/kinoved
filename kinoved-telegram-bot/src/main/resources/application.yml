@@ -1,0 +1,31 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: kinoved-telegram-bot
+
+telegram:
+  bot:
+    token: xxx
+    username: xxx
+    creatorId: xxx
+
+kinoved-core:
+  api:
+    url: http://localhost:8080
+
+feign:
+  okhttp:
+    enabled: true
+
+app:
+  settings:
+    callback-data-separator: ":::"
+    caption-symbols-limit: 1024
+    max-displayed-persons-per-profession: 5
+    max-images-per-message: 10
+
+logging:
+  level:
+    root: INFO

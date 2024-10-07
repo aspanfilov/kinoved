@@ -1,3 +1,2 @@
-# KINOVED
+# kinoved-core
 Movie cataloger application
-
